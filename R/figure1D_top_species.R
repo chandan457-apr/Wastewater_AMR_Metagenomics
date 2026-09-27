@@ -1,0 +1,11 @@
+# 03_figure1D_top_species.R
+source("R/00_setup.R")
+dat <- read.delim("data/bracken_species_normalized.tsv",check.names=FALSE)
+species_rank <- dat %>% group_by(city_state,name) %>% summarise(total_normalized_count=sum(normalized_count),.groups="drop")
+top10 <- species_rank %>% group_by(city_state) %>% slice_max(total_normalized_count,n=10,with_ties=FALSE) %>% ungroup() %>% filter(!str_detect(name,regex("uncultured",ignore_case=TRUE)))
+top20 <- species_rank %>% group_by(city_state) %>% slice_max(total_normalized_count,n=20,with_ties=FALSE) %>% ungroup() %>% filter(!str_detect(name,regex("uncultured",ignore_case=TRUE)))
+write.table(top10,"results/tables/Figure1D_top10_species_by_city.tsv",sep="\t",quote=FALSE,row.names=FALSE)
+write.table(top20,"results/tables/Figure1D_top20_species_by_city.tsv",sep="\t",quote=FALSE,row.names=FALSE)
+top10_temporal <- dat %>% semi_join(top10,by=c("city_state","name")) %>% group_by(city_state,month_label) %>% mutate(fraction_normalized_count=normalized_count/sum(normalized_count)) %>% ungroup()
+p1c <- ggplot(top10_temporal,aes(month_label,fraction_normalized_count,fill=name)) + geom_col() + facet_wrap(~city_state,nrow=2) + scale_y_continuous(labels=scales::percent_format(accuracy=1),expand=c(0,0)) + theme_classic(base_size=13)
+ggsave("results/figures/Figure1D_top10_temporal.png",p1c,width=11,height=7.5,units="in",dpi=600,bg="white")
