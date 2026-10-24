@@ -7,24 +7,12 @@
 #   A: proportion of ARG carrying contigs for each ARG
 #   B: proportion of ARG carrying contigs for each drug class
 #   C: relationship between ARG proportion and MGE co occurrence
-#
-# Rules:
-#   BacAnt ARGs        >=90% identity; no coverage cutoff
-#   BacAnt transposons >=90% identity; no coverage cutoff
-#   geNomad plasmids   >=0.9 plasmid score
-#   ARG-MGE            same contig
-#
 # ================================================================
 
 library(tidyverse)
 library(patchwork)
 library(scales)
 library(ggrepel)
-
-data_dir <- "data/Figure3_MAG"
-fig_dir  <- "figures/Figure3_MAG"
-
-dir.create(fig_dir, recursive = TRUE, showWarnings = FALSE)
 
 # -------------------------------
 # 1. Read inputs
@@ -49,7 +37,6 @@ mag_summary <- read_tsv(
   show_col_types = FALSE
 )
 
-# Ensure MAG/contig IDs have identical types for joins.
 args <- args %>%
   mutate(
     MAG_ID = as.character(MAG_ID),
@@ -286,7 +273,7 @@ fig3C <- ggplot(
   )
 
 # -------------------------------
-# 6. Combine as a true 3 panel
+# 6. Combine as a 3 panel
 #    Figure 3
 # -------------------------------
 figure3 <- (fig3A | fig3B) / fig3C +
@@ -354,26 +341,3 @@ write_tsv(
   file.path(fig_dir, "Figure3_ARG_MGE_contig_table.tsv")
 )
 
-# -------------------------------
-# 9. Console summary
-# -------------------------------
-cat("\n================ FIGURE 3 ================\n")
-cat("HQ MAGs:", 33, "\n")
-cat("ARG-positive contigs:", n_arg_contigs, "\n")
-cat("ARG-positive MAGs:", n_distinct(args$MAG_ID), "\n")
-cat("Unique ARGs:", n_distinct(args$ARG), "\n")
-cat("Plasmid-positive contigs:", n_distinct(plasmids$Contig_ID), "\n")
-cat("Transposon-positive contigs:",
-    n_distinct(transposons$Contig_ID), "\n")
-cat("ARG-positive contigs with same-contig MGE:",
-    n_distinct(
-      arg_mge$Contig_ID[arg_mge$MGE_Associated]
-    ), "\n")
-
-cat("\nARG classes:\n")
-print(class_panel)
-
-cat("\nARG-MGE dot-plot data:\n")
-print(dot_panel)
-
-cat("\nFigures saved to:", fig_dir, "\n")
