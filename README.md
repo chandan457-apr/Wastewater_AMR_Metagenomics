@@ -33,8 +33,8 @@ visualization of the project results.
 
 The scripts include normalization of species level abundance data, calculation
 of alpha diversity, Aitchison PCoA of taxonomic and ARG profiles, analysis of
-top bacterial species and ARG associated drug classes, and MAG level
-ARG–MGE analysis.
+top bacterial species and ARG associated drug classes, MAG level
+ARG–MGE analysis and the same was used to generate plots for the project.
 
 The required R packages are mentioned in 00_setup.R.
 
@@ -45,9 +45,3 @@ All processed data required for the R analysis are deposited at
 
 The Zenodo archive contains the processed tabular data used for taxonomic,
 antimicrobial resistance, MAG and mobile genetic element analyses.
-
-The data should be downloaded and placed in the appropriate `data` directory
-before running the R scripts.
-
-The raw sequencing data were obtained from the publicly available source
-dataset used for this computational analysis.
