@@ -20,19 +20,6 @@ library(ecodist)
 library(UpSetR)
 library(ggplotify)
 
-data_dir <- "data"
-results_dir <- "results"
-figure_dir <- file.path(results_dir, "figures")
-table_dir <- file.path(results_dir, "tables")
-dir.create(figure_dir, recursive=TRUE, showWarnings=FALSE)
-dir.create(table_dir, recursive=TRUE, showWarnings=FALSE)
-
-city_colors <- c(
-  "Chennai" = "#E76F61",
-  "Delhi" = "#73A900",
-  "Kolkata" = "#19AFC3",
-  "Mumbai" = "#A96BEF"
-)
 
 meta <- tribble(
   ~fileName, ~SRR, ~city_state, ~month_label, ~site,
