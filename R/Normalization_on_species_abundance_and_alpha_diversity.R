@@ -221,11 +221,6 @@ alpha_df <- dat_bac %>%
   
   summarise(
     
-    # ------------------------------------------
-    # Richness
-    # Number of taxa with non zero abundance
-    # ------------------------------------------
-    
     richness =
       sum(normalized_count > 0),
     
@@ -251,10 +246,6 @@ alpha_df <- dat_bac %>%
     
     # ------------------------------------------
     # Simpson diversity
-    #
-    # This is 1 - Simpson dominance
-    # Therefore:
-    # higher = greater diversity
     # ------------------------------------------
     
     simpson =
